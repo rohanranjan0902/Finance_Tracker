@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack - Personal Finance Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login/Register Section -->
+        <div id="auth-section" class="section">
+            <div class="card">
+                <h1>🏦 FinTrack</h1>
+                <p class="subtitle">Personal Finance Manager</p>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="showTab('login')">Login</button>
+                    <button class="tab-btn" onclick="showTab('register')">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+                    <h2>Login</h2>
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form" style="display: none;">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-section" class="section" style="display: none;">
+            <nav class="navbar">
+                <div class="nav-brand">
+                    <h2>🏦 FinTrack</h2>
+                </div>
+                <div class="nav-user">
+                    <span id="user-name"></span>
+                    <button onclick="logout()" class="btn btn-secondary">Logout</button>
+                </div>
+            </nav>
+
+            <div class="dashboard-content">
+                <!-- Accounts Overview -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Your Accounts</h3>
+                        <button onclick="showModal('create-account-modal')" class="btn btn-primary">
+                            + New Account
+                        </button>
+                    </div>
+                    <div id="accounts-list" class="accounts-grid">
+                        <!-- Accounts will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <div class="actions-grid">
+                        <button onclick="showModal('deposit-modal')" class="action-btn">
+                            <span class="icon">💰</span>
+                            <span>Deposit</span>
+                        </button>
+                        <button onclick="showModal('withdraw-modal')" class="action-btn">
+                            <span class="icon">💸</span>
+                            <span>Withdraw</span>
+                        </button>
+                        <button onclick="showModal('transfer-modal')" class="action-btn">
+                            <span class="icon">🔄</span>
+                            <span>Transfer</span>
+                        </button>
+                        <button onclick="showModal('history-modal')" class="action-btn">
+                            <span class="icon">📊</span>
+                            <span>History</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Account Modal -->
+    <div id="create-account-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Account</h3>
+                <span class="close" onclick="closeModal('create-account-modal')">&times;</span>
+            </div>
+            <form id="create-account-form">
+                <div class="form-group">
+                    <label for="account-type">Account Type</label>
+                    <select id="account-type" required>
+                        <option value="SAVINGS">Savings</option>
+                        <option value="CHECKING">Checking</option>
+                        <option value="CREDIT">Credit</option>
+                        <option value="INVESTMENT">Investment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="initial-balance">Initial Balance ($)</label>
+                    <input type="number" id="initial-balance" step="0.01" min="0" value="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="deposit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Deposit Money</h3>
+                <span class="close" onclick="closeModal('deposit-modal')">&times;</span>
+            </div>
+            <form id="deposit-form">
+                <div class="form-group">
+                    <label for="deposit-account">Select Account</label>
+                    <select id="deposit-account" required>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deposit-amount">Amount ($)</label>
+                    <input type="number" id="deposit-amount" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="deposit-description">Description (Optional)</label>
+                    <input type="text" id="deposit-description" placeholder="e.g., Salary, Gift">
+                </div>
+                <button type="submit" class="btn btn-primary">Deposit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdraw-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdraw Money</h3>
+                <span class="close" onclick="closeModal('withdraw-modal')">&times;</span>
+            </div>
+            <form id="withdraw-form">
+                <div class="form-group">
+                    <label for="withdraw-account">Select Account</label>
+                    <select id="withdraw-account" required>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="withdraw-amount">Amount ($)</label>
+                    <input type="number" id="withdraw-amount" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="withdraw-description">Description (Optional)</label>
+                    <input type="text" id="withdraw-description" placeholder="e.g., ATM, Bills">
+                </div>
+                <button type="submit" class="btn btn-primary">Withdraw</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div id="transfer-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Transfer Money</h3>
+                <span class="close" onclick="closeModal('transfer-modal')">&times;</span>
+            </div>
+            <form id="transfer-form">
+                <div class="form-group">
+                    <label for="transfer-from">From Account</label>
+                    <select id="transfer-from" required>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transfer-to">To Account</label>
+                    <select id="transfer-to" required>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transfer-amount">Amount ($)</label>
+                    <input type="number" id="transfer-amount" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="transfer-description">Description (Optional)</label>
+                    <input type="text" id="transfer-description" placeholder="e.g., Savings transfer">
+                </div>
+                <button type="submit" class="btn btn-primary">Transfer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Transaction History</h3>
+                <span class="close" onclick="closeModal('history-modal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="history-account">Select Account</label>
+                <select id="history-account" onchange="loadTransactionHistory()">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+            <div id="transaction-history" class="transaction-list">
+                <!-- Transactions will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

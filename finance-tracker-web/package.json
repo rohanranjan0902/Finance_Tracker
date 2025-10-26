@@ -1,0 +1,21 @@
+{
+  "name": "finance-tracker",
+  "version": "1.0.0",
+  "description": "A web application for tracking personal finances.",
+  "main": "src/js/app.js",
+  "scripts": {
+    "start": "live-server src",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "finance",
+    "tracker",
+    "web"
+  ]
+}
